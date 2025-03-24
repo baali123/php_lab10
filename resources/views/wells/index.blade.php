@@ -11,6 +11,7 @@
             <h5>Search Wells</h5>
         </div>
         <div class="card-body">
+            <!-- Search Form -->
             <form method="GET" action="{{ route('wells.index') }}">
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -63,6 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Wells listing -->
                             @foreach($wells as $well)
                                 <tr>
                                     <td>{{ $well->well_name }}</td>
@@ -78,15 +80,13 @@
                                     <td>{{ $well->production_bpd ?? 'N/A' }}</td>
                                     <td>{{ $well->commissioned_date->format('Y-m-d') }}</td>
                                     <td>
-                                        <div class="btn-group" role="group" aria-label="Well actions">
-                                            <a href="{{ route('wells.show', $well) }}" class="btn btn-sm btn-info">View</a>
-                                            <a href="{{ route('wells.edit', $well) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <form action="{{ route('wells.destroy', $well) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this well?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </div>
+                                        <a href="{{ route('wells.show', $well) }}" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ route('wells.edit', $well) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <form action="{{ route('wells.destroy', $well) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('wells.index') }}">Oil Well Management</a>
+            <a class="navbar-brand" href="{{ route('wells.index') }}">Well Management System</a>
         </div>
     </nav>
 

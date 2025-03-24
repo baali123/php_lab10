@@ -29,10 +29,6 @@ This application allows oil and gas companies to track and maintain data related
 -   `PUT/PATCH /wells/{well}` - Update a well
 -   `DELETE /wells/{well}` - Delete a well
 
-## Screenshots
-
-[Include screenshots of your application here]
-
 ## Technologies Used
 
 -   Laravel 10

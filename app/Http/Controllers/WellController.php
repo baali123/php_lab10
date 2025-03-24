@@ -7,31 +7,33 @@ use Illuminate\Http\Request;
 
 class WellController extends Controller
 {
-    /**
-     * Display a listing of the wells.
-     */
+    //  Display a listing of the wells.
+
     public function index(Request $request)
     {
         $query = Well::query();
 
-        // Search functionality
+        // Basic Text Search (Well Name and Status) 
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('well_name', 'like', "%{$search}%")
                 ->orWhere('status', 'like', "%{$search}%");
         }
 
-        // Filter by field location
-        if ($request->filled('field_location')) {
-            $query->where('field_location', $request->input('field_location'));
+        // Filtering by Status Only
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
         }
 
-        // Filter by minimum depth
+        // Filtering by Field Location and Minimum Depth 
+        if ($request->filled('field_location')) {
+            $query->where('field_location', 'like', "%{$request->input('field_location')}%");
+        }
         if ($request->filled('min_depth')) {
             $query->where('depth_meters', '>=', $request->input('min_depth'));
         }
 
-        // Filter by production range
+        // Filtering by Production Range 
         if ($request->filled('production_min')) {
             $query->where('production_bpd', '>=', $request->input('production_min'));
         }
@@ -39,7 +41,7 @@ class WellController extends Controller
             $query->where('production_bpd', '<=', $request->input('production_max'));
         }
 
-        // Filter by date range
+        // Filtering by Commissioned Date Range
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('commissioned_date', [
                 $request->input('start_date'),
@@ -52,19 +54,18 @@ class WellController extends Controller
         return view('wells.index', compact('wells'));
     }
 
-    /**
-     * Show the form for creating a new well.
-     */
+    //  Show the form for creating a new well.
+
     public function create()
     {
         return view('wells.create');
     }
 
-    /**
-     * Store a newly created well in storage.
-     */
+    // Store a newly created well in storage.
+
     public function store(Request $request)
     {
+        // Validation
         $validated = $request->validate([
             'well_name' => 'required|unique:wells,well_name',
             'field_location' => 'required',
@@ -89,28 +90,26 @@ class WellController extends Controller
 
         Well::create($validated);
 
-        return redirect()->route('wells.index')->with('success', 'Well created successfully.');
+        return redirect()->route('wells.index')->with('success', 'Well created successfully!');
     }
 
-    /**
-     * Display the specified well.
-     */
+    //  Display the specified well.
+
     public function show(Well $well)
     {
         return view('wells.show', compact('well'));
     }
 
-    /**
-     * Show the form for editing the specified well.
-     */
+    //  Show the form for editing the specified well.
+
     public function edit(Well $well)
     {
         return view('wells.edit', compact('well'));
     }
 
-    /**
-     * Update the specified well in storage.
-     */
+
+    // Update the specified well in storage.
+
     public function update(Request $request, Well $well)
     {
         $validated = $request->validate([
@@ -137,16 +136,15 @@ class WellController extends Controller
 
         $well->update($validated);
 
-        return redirect()->route('wells.index')->with('success', 'Well updated successfully.');
+        return redirect()->route('wells.index')->with('success', 'Well updated successfully!');
     }
 
-    /**
-     * Remove the specified well from storage.
-     */
+    //  Remove the specified well from storage.
+  
     public function destroy(Well $well)
     {
         $well->delete();
 
-        return redirect()->route('wells.index')->with('success', 'Well deleted successfully.');
+        return redirect()->route('wells.index')->with('success', 'Well deleted successfully!');
     }
 }
